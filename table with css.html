@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tables - html </title>
+
+    <style>
+        /* 1. Basic Table Structure & Width */
+        table {
+            width: 80%;
+            /* Takes up 80% of the container width */
+            margin: 20px auto;
+            /* Centers the table on the page */
+            border-collapse: collapse;
+            /* Removes double borders between cells */
+            font-family: Arial, sans-serif;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow for depth */
+        }
+
+        /* 2. Table Headers (Heading Row) */
+        th {
+            background-color: #333;
+            /* Dark background */
+            color: white;
+            font-weight: bold;
+            text-align: left;
+            padding: 12px 15px;
+            /* Padding inside the header cells */
+            border: 1px solid #333;
+            /* Border color matches background */
+        }
+
+        /* 3. Table Data Cells */
+        td {
+            padding: 10px 15px;
+            /* Padding inside data cells */
+            border: 1px solid #ddd;
+            /* Light gray border for all cells */
+            text-align: left;
+        }
+
+        /* 4. Alternating Row Colors (Zebra Striping) */
+        /* This improves readability by making every other row look different */
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+            /* Very light gray for even rows */
+        }
+
+        /* 5. Hover Effect on Rows */
+        /* Highlights the row when the user points at it */
+        tr:hover {
+            background-color: #f0f0f0;
+            /* Slightly darker hover color */
+            cursor: pointer;
+            /* Change cursor to pointer to indicate interactivity */
+        }
+
+        /* 6. Styling the Table Caption (Optional) */
+        caption {
+            font-size: 1.5em;
+            font-weight: bold;
+            padding: 10px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>tabels is html</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>section</th>
+                <th>CGP</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>parth</td>
+                <td>b</td>
+                <td>9.8</td>
+            </tr>
+            <tr>
+                <td>divyansh</td>
+                <td>b</td>
+                <td>8.1</td>
+            </tr>
+            <tr>
+                <td>anmol</td>
+                <td>b</td>
+                <td>7.7</td>
+            </tr>
+            <tr>
+                <td>ameer</td>
+                <td>a</td>
+                <td>8</td>
+            </tr>
+            <tr>
+                <td>overall </td>
+                <td colspan="2">pass</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+</body>
+
+</html>
