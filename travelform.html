@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>travelallaround.com - book your vacation</title>
+    <style>
+    /* 1. Body and Form Container Styling */
+    body {
+        font-family: 'Verdana', sans-serif;
+        background-color: #e6f7ff; /* Very light blue/sky color */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    /* Styling for the main form element */
+    form {
+        background-color: white;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Nice shadow */
+        width: 100%;
+        max-width: 400px; /* Limits the form width for focus */
+        border: 2px solid #b3e0ff; /* Light blue border */
+    }
+
+    /* 2. Styling Input Groups (divs) */
+    form div {
+        margin-bottom: 18px;
+    }
+
+    /* 3. Label Styling */
+    label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #004d99; /* Darker blue for labels */
+        font-size: 0.9em;
+        text-transform: uppercase;
+    }
+
+    /* 4. Input Field Styling (Text, Number, Email, Tel) */
+    input[type="text"],
+    input[type="number"],
+    input[type="tel"],
+    input[type="email"] {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #cceeff; /* Light blue border */
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: 1em;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Focus effect */
+    input:focus {
+        border-color: #007bff; /* Bright blue on focus */
+        outline: none;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+        background-color: #f7fcff; /* Very slight background change on focus */
+    }
+    
+    /* Placeholder text style */
+    ::placeholder {
+        color: #aaa;
+        font-style: italic;
+    }
+
+    /* 5. Checkbox Styling (Terms and Conditions) */
+    /* Adjusting layout for the checkbox line */
+    form div:has(input[type="checkbox"]) {
+        display: flex;
+        align-items: center;
+        margin-top: 25px;
+        margin-bottom: 25px;
+    }
+
+    form div:has(input[type="checkbox"]) label {
+        margin-bottom: 0;
+        margin-left: 8px;
+        text-transform: none;
+        font-weight: 400;
+        color: #555;
+    }
+
+    /* 6. Button Styling */
+    button[type="submit"] {
+        width: 100%;
+        padding: 12px;
+        background-color: #007bff; /* Primary travel blue */
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1em;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.1s ease;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+    }
+
+    button[type="submit"]:active {
+        transform: translateY(1px); /* Little press effect */
+    }
+</style>
+</head>
+
+<body>
+
+    <form action="">
+        <div> <label for="name">name</label>
+            <input type="text" placeholder="enter your name " id="name">
+        </div>
+        <div>
+            <label for="age">age</label>
+            <input type="number" id="age " placeholder="enter your age">
+        </div>
+        <div>
+            <label for="phone">phone</label>
+            <input type="tel" id="phone" placeholder="enter your number">
+        </div>
+        <div>
+            <label for="email">email</label>
+            <input type="email" placeholder="enter your email" id="email">
+        </div>
+        <div>
+            <label for="terms ">terms and condition</label>
+            <input type="checkbox" id="terms">
+        </div>
+        <div>
+            <button type="submit" >submit</button>
+        </div>
+    </form>
+</body>
+
+</html>
