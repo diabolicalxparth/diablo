@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> <b> cricket score</b></title>
+    <style>
+    /* 1. Table Reset and Structure */
+    table {
+        width: 60%; /* Adjust width to make it look like a scorecard */
+        margin: 40px auto; /* Center the table and add vertical spacing */
+        border-collapse: collapse; /* Removes the double border */
+        font-family: 'Arial', sans-serif;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for lift */
+        border-radius: 8px; /* Slightly rounded corners for the table */
+        overflow: hidden; /* Ensures corners are rounded correctly */
+    }
+
+    /* 2. Caption Styling */
+    caption {
+        font-size: 1.6em;
+        font-weight: bold;
+        padding: 15px;
+        color: #004d99; /* Dark blue caption color */
+        margin-bottom: 10px;
+        text-transform: uppercase;
+    }
+
+    /* 3. Table Header Styling */
+    thead th {
+        background-color: #007bff; /* Primary header blue */
+        color: white;
+        text-align: left;
+        padding: 12px 15px;
+        font-size: 1.1em;
+        letter-spacing: 0.5px;
+    }
+
+    /* 4. Table Data Cell Styling */
+    tbody td {
+        padding: 10px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd; /* Separator line between rows */
+        font-size: 1em;
+    }
+
+    /* 5. Alternating Row Colors (Zebra Striping) */
+    /* This makes the scorecard easy to read across the rows */
+    tbody tr:nth-child(even) {
+        background-color: #f2f2f2; /* Light gray for even rows */
+    }
+
+    /* 6. Hover Effect */
+    /* Highlights the specific player/row being viewed */
+    tbody tr:hover {
+        background-color: #e6f2ff; /* Very light blue on hover */
+        cursor: default;
+    }
+
+    /* Style for the Name column (making it stand out slightly) */
+    tbody tr td:first-child {
+        font-weight: 500;
+        color: #333;
+    }
+
+    /* Style for the Runs column (making numbers stand out) */
+    tbody tr td:last-child {
+        font-weight: bold;
+        color: #cc0000; /* Red color for scores */
+        text-align: center; /* Center the runs for balance */
+    }
+</style>
+</head>
+
+<body>
+    <table>
+        <caption>cricket score</caption>
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>runs</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>raju</td>
+                <td>65</td>
+            </tr>
+            
+            <tr>
+                <td>anmol</td>
+                <td>55</td>
+            </tr>
+            <tr>
+                <td>C_k</td>
+                <td>44</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+</body>
+
+</html>
