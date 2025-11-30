@@ -1,70 +1,403 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Page Title</title>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Highway Speed Racer</title>
+    <style>
+        /* --- CSS Variables for Theme Colors --- */
+        :root {
+            --road-color: #383838;
+            --road-border: #f0f0f0;
+            --car-player: #4CAF50; /* Green */
+            --car-obstacle: #E23744; /* Red */
+            --background-color: #f0f0f5;
+            --score-color: #007bff;
+        }
 
-<style>
-@font-face { 
-  font-family: "Merriweather Sans";
-  src: url('MerriweatherSans-Medium.ttf') format('truetype');
-}
+        /* --- General Styling --- */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            user-select: none;
+        }
 
-body {
-  background: #FFFFFF;
-  margin-bottom: 200px;
-}
+        /* --- Game Container and Card --- */
+        .game-card {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+        }
 
-@keyframes BackgroundGradient {
-  0%{background-position:0% 50%;}
-  50%{background-position: 100% 50% }
-  100%{background-position: 0% 50%}
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
 
-}
+        /* --- Score and Timer Display --- */
+        .score-board {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 10px 0;
+            border-bottom: 2px solid #ddd;
+        }
+        .score-display {
+            color: var(--score-color);
+        }
 
-.VCE{
-  color: #f2f2f2;
-  background: linear-gradient(45deg, #FCE38A, #f5ad4d, #fd81b5, #f74689, #ad5af3, #8a13ef );
-  background-size: 450% 100%;
-  animation: BackgroundGradient 30s ease infinite;  
-  padding: 20px;
-  margin: 30px;
-  border-radius: 0.5rem;
-}
+        /* --- Game Canvas / Road Area --- */
+        #game-area {
+            position: relative;
+            width: 300px; /* Fixed width for the road */
+            height: 450px; /* Fixed height for the viewport */
+            background-color: var(--road-color);
+            border: 10px solid var(--road-border);
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+        }
 
-.VCE_Title{
-  font-family: "Merriweather Sans", sans-serif;
-  font-weight: 400;
-  font-size: 30px;
-  margin-bottom: 0;
-}
+        /* --- Road Markers (Stripes) --- */
+        .lane-marker {
+            position: absolute;
+            width: 6px;
+            height: 50px;
+            background-color: white;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 3px;
+        }
 
-.JTime{
-  font-family: "Merriweather Sans", sans-serif;
-  font-size: 20px;
-}
+        /* --- Game Elements: Cars --- */
+        .car {
+            position: absolute;
+            width: 40px;
+            height: 70px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            transition: left 0.1s ease-out;
+        }
 
-button {
-  font-family: "Merriweather Sans", sans-serif;
-  font-size: 16px;
-  padding: 15px 22px;
-  border:3px #f2f2f2 solid;
-  border-radius:20px;
-  word-break: break-word;
-  white-space: normal;  
-}
+        .player {
+            background-color: var(--car-player);
+            bottom: 10px;
+            z-index: 10;
+        }
 
-</style>
+        .obstacle {
+            background-color: var(--car-obstacle);
+            z-index: 5;
+        }
+
+        /* --- Game Over Message Box --- */
+        .message-box {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            z-index: 20;
+            display: none; /* Hidden by default */
+        }
+        .message-box p {
+            margin: 10px 0;
+        }
+
+
+        /* --- Button Styling --- */
+        .controls {
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: var(--score-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px #0056b3;
+            transition: background-color 0.1s, transform 0.1s, box-shadow 0.1s;
+        }
+
+        button:active {
+            box-shadow: 0 1px #0056b3;
+            transform: translateY(3px);
+        }
+    </style>
 </head>
 <body>
-<div class="VCE">
-<h2 class="VCE_Title">Visual Code Editor for HTML, CSS and JavaScript</h2>
-<hr style="  border: 3px solid #f2f2f2;">
-<p class="JTime">Whatever code you write above, Live Preview will be visible here</p>
-<br>
-<button type="button" onclick="document.getElementById('Example').innerHTML = Date()">a Javascript Date and Time</button>
-<p class="JTime" id="Example"></p>
-<p class="JTime">Hit the "Clear" button and start typing Code.</p>
-</div>
+
+    <div class="game-card">
+        <h1>Highway Speed Racer 🚗</h1>
+        <p>Use the left and right arrow keys (or A/D) to steer and avoid the red cars!</p>
+
+        <div class="score-board">
+            Time Alive: <span id="score" class="score-display">0</span>s
+            High Score: <span id="high-score" class="score-display">0</span>s
+        </div>
+
+        <div id="game-area">
+            <!-- Game elements will be injected here by JavaScript -->
+
+            <!-- Player Car -->
+            <div id="player-car" class="car player"></div>
+
+            <!-- Game Over Message -->
+            <div id="game-over-message" class="message-box">
+                <p>CRASH! GAME OVER</p>
+                <p>Time Survived: <span id="final-score">0</span>s</p>
+                <button id="restart-button">Play Again</button>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="start-button">Start Race</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Game Setup ---
+        const gameArea = document.getElementById('game-area');
+        const playerCar = document.getElementById('player-car');
+        const scoreDisplay = document.getElementById('score');
+        const highScoreDisplay = document.getElementById('high-score');
+        const startButton = document.getElementById('start-button');
+        const restartButton = document.getElementById('restart-button');
+        const gameOverMessage = document.getElementById('game-over-message');
+        const finalScoreDisplay = document.getElementById('final-score');
+
+        // --- Constants ---
+        const GAME_WIDTH = 300;
+        const GAME_HEIGHT = 450;
+        const PLAYER_WIDTH = 40;
+        const PLAYER_HEIGHT = 70;
+        const LANE_COUNT = 3;
+        const LANE_WIDTH = GAME_WIDTH / LANE_COUNT;
+        
+        // --- State Variables ---
+        let gameLoopId;
+        let obstacleSpawnId;
+        let isGameRunning = false;
+        let playerScore = 0;
+        let playerSpeed = 5; // Base speed
+        let obstacleSpeed = 3; // Initial obstacle speed
+        let maxHighScore = localStorage.getItem('racerHighScore') || 0;
+
+        // --- Player Position ---
+        let playerX = (GAME_WIDTH / 2) - (PLAYER_WIDTH / 2); // Center of the middle lane
+        const playerY = GAME_HEIGHT - PLAYER_HEIGHT - 10; // Near the bottom
+
+        // --- Initialization ---
+        highScoreDisplay.textContent = maxHighScore;
+        playerCar.style.left = `${playerX}px`;
+        playerCar.style.top = `${playerY}px`;
+        
+        // --- Game Functions ---
+
+        function updateHighScore() {
+            if (playerScore > maxHighScore) {
+                maxHighScore = playerScore;
+                localStorage.setItem('racerHighScore', maxHighScore);
+                highScoreDisplay.textContent = maxHighScore;
+            }
+        }
+
+        function movePlayer(direction) {
+            let newX = playerX;
+            const moveStep = 25; // How much player moves per key press
+
+            if (direction === 'left') {
+                newX = playerX - moveStep;
+            } else if (direction === 'right') {
+                newX = playerX + moveStep;
+            }
+
+            // Boundary checks: Keep the car within the road lanes
+            const minX = (GAME_WIDTH / 2) - (LANE_WIDTH * 1.5) + (PLAYER_WIDTH / 2); // Left edge approx
+            const maxX = (GAME_WIDTH / 2) + (LANE_WIDTH * 1.5) - (PLAYER_WIDTH * 1.5); // Right edge approx
+            
+            // Simpler boundary: Ensure car stays entirely within the road area (300px width)
+            const roadPadding = 5;
+            playerX = Math.max(roadPadding, Math.min(newX, GAME_WIDTH - PLAYER_WIDTH - roadPadding));
+
+            playerCar.style.left = `${playerX}px`;
+        }
+
+        function createObstacle() {
+            if (!isGameRunning) return;
+
+            const obstacle = document.createElement('div');
+            obstacle.classList.add('car', 'obstacle');
+            obstacle.dataset.lane = Math.floor(Math.random() * LANE_COUNT);
+
+            // Calculate starting X position based on lane
+            const startX = (obstacle.dataset.lane * LANE_WIDTH) + (LANE_WIDTH / 2) - (PLAYER_WIDTH / 2);
+            obstacle.style.left = `${startX}px`;
+            obstacle.style.top = `-${PLAYER_HEIGHT}px`; // Start above the screen
+
+            gameArea.appendChild(obstacle);
+        }
+
+        function handleObstacles() {
+            const obstacles = document.querySelectorAll('.obstacle');
+            obstacles.forEach(obstacle => {
+                let currentTop = parseFloat(obstacle.style.top);
+                currentTop += obstacleSpeed;
+                obstacle.style.top = `${currentTop}px`;
+
+                // 1. Check for collision
+                const playerRect = playerCar.getBoundingClientRect();
+                const obstacleRect = obstacle.getBoundingClientRect();
+
+                if (currentTop < GAME_HEIGHT) { // Only check for visible obstacles
+                    if (
+                        playerRect.left < obstacleRect.right &&
+                        playerRect.right > obstacleRect.left &&
+                        playerRect.top < obstacleRect.bottom &&
+                        playerRect.bottom > obstacleRect.top
+                    ) {
+                        endGame();
+                        return;
+                    }
+                }
+                
+                // 2. Remove if off-screen
+                if (currentTop > GAME_HEIGHT) {
+                    obstacle.remove();
+                }
+            });
+        }
+        
+        function updateRoadMarkers(roadY) {
+            // Remove old markers
+            document.querySelectorAll('.lane-marker').forEach(marker => marker.remove());
+
+            // Create new markers based on roadY position
+            for (let i = 0; i < 10; i++) { // Max 10 markers visible at once
+                const marker = document.createElement('div');
+                marker.classList.add('lane-marker');
+                
+                // roadY ensures continuous scrolling effect
+                const yPos = (i * 80 + roadY) % (GAME_HEIGHT + 80) - 80; 
+                marker.style.top = `${yPos}px`;
+                gameArea.appendChild(marker);
+            }
+        }
+        
+        let roadY = 0; // Road marker position
+
+        function gameLoop() {
+            if (!isGameRunning) return;
+
+            // 1. Update Score and difficulty (every second)
+            if (gameLoopId % 60 === 0) { // Assuming 60 FPS
+                playerScore++;
+                scoreDisplay.textContent = playerScore;
+
+                // Increase difficulty over time
+                if (playerScore % 10 === 0) {
+                    obstacleSpeed += 0.5;
+                    playerSpeed += 0.2;
+                }
+            }
+
+            // 2. Move Obstacles and check collisions
+            handleObstacles();
+            
+            // 3. Road Movement Simulation
+            roadY += obstacleSpeed * 1.5; // Road moves faster than obstacles for parallax feel
+            updateRoadMarkers(roadY);
+
+            // Schedule next frame
+            gameLoopId = requestAnimationFrame(gameLoop);
+        }
+
+        function setupGame() {
+            // Clear all previous obstacles
+            document.querySelectorAll('.obstacle').forEach(obs => obs.remove());
+            
+            playerScore = 0;
+            obstacleSpeed = 3;
+            playerSpeed = 5;
+            scoreDisplay.textContent = playerScore;
+            
+            // Reset player position
+            playerX = (GAME_WIDTH / 2) - (PLAYER_WIDTH / 2);
+            playerCar.style.left = `${playerX}px`;
+
+            gameOverMessage.style.display = 'none';
+        }
+
+        function startGame() {
+            if (isGameRunning) return;
+
+            isGameRunning = true;
+            setupGame();
+            startButton.style.display = 'none';
+            
+            // Start the main game loop
+            gameLoopId = requestAnimationFrame(gameLoop);
+
+            // Start spawning obstacles every 1 second
+            obstacleSpawnId = setInterval(createObstacle, 1000);
+        }
+
+        function endGame() {
+            isGameRunning = false;
+            cancelAnimationFrame(gameLoopId);
+            clearInterval(obstacleSpawnId);
+            
+            updateHighScore();
+
+            finalScoreDisplay.textContent = playerScore;
+            gameOverMessage.style.display = 'flex';
+            startButton.style.display = 'block';
+        }
+
+        // --- Event Listeners ---
+
+        startButton.addEventListener('click', startGame);
+        restartButton.addEventListener('click', startGame);
+
+        document.addEventListener('keydown', (e) => {
+            if (!isGameRunning) return;
+
+            if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'a') {
+                movePlayer('left');
+            } else if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'd') {
+                movePlayer('right');
+            }
+        });
+
+        // Initialize markers on load
+        updateRoadMarkers(0);
+
+    </script>
 </body>
 </html>
